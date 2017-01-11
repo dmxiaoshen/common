@@ -6,21 +6,26 @@ import org.slf4j.LoggerFactory;
 import com.bell.common.client.context.AbstractDubboContext;
 
 public abstract class AbstractApiHolder {
-	protected final Logger logger = LoggerFactory.getLogger(getClass());
-	public static final ThreadLocal<AbstractDubboContext> holder = new ThreadLocal<>();
+	protected static final Logger logger = LoggerFactory.getLogger(AbstractApiHolder.class);
+	@SuppressWarnings("rawtypes")
+	public static AbstractDubboContext dubboContext = null;
 
 	public static <T> T getBean(Class<T> clazz) {
-		return holder.get().getContext().getBean(clazz);
+		return dubboContext.getContext().getBean(clazz);
 	}
-
-	public abstract void showService();
 	
-	protected void printService(String serviceName){
+	public static void printService(String serviceName){
 		System.out.println("---"+serviceName+"---initialized");
 	}
 	
-	protected void logService(String serviceName){
+	public static void logService(String serviceName){
 		logger.error("---"+serviceName+"---initialized");
+	}
+	
+	public static void notNull(Object obj,String message){
+		if(obj==null){
+			throw new IllegalArgumentException(message);
+		}
 	}
 
 }

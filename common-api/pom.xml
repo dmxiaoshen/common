@@ -17,6 +17,9 @@
 	</properties>
 
 	<dependencies>
-
+		<dependency>
+			<groupId>org.glassfish.jersey.test-framework</groupId>
+			<artifactId>jersey-test-framework-core</artifactId>
+		</dependency>
 	</dependencies>
 </project>

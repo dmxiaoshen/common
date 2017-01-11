@@ -7,7 +7,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.bell.common.client.api.AbstractApiHolder;
 
-public abstract class AbstractDubboContext {
+public abstract class AbstractDubboContext<T extends AbstractDubboContext<T>> {
 
 	protected ClassPathXmlApplicationContext context;
 	protected final String appName;
@@ -38,10 +38,12 @@ public abstract class AbstractDubboContext {
 		context = new ClassPathXmlApplicationContext(this.configPath);
 	}
 
-	public void init() {
+	@SuppressWarnings("unchecked")
+	public T start() {
 		if (context != null) {
 			context.start();
-			AbstractApiHolder.holder.set(this);
+			AbstractApiHolder.dubboContext = this;
+			return (T) this;
 		} else {
 			throw new IllegalStateException("dubbo context can not be null");
 		}
