@@ -1,4 +1,4 @@
-package com.bell.common.base.spring;
+package com.bell.common.core.spring;
 
 import java.util.Map;
 
