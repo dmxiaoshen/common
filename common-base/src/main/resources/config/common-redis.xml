@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:redis="http://www.springframework.org/schema/redis"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-4.1.xsd 
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd
+	http://www.springframework.org/schema/redis http://www.springframework.org/schema/redis/spring-redis-1.5.xsd">
+	
+	    <!-- 使用redis缓存 -->      
+     <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">    
+         <property name="maxTotal" value="50000" />    
+         <property name="maxIdle" value="50000" />    
+         <property name="minIdle" value="100" />   
+         <property name="maxWaitMillis" value="15000"/>    
+         <property name="testOnBorrow" value="true" />    
+     </bean>   
+      
+      <bean id="shardedJedisPool" class="redis.clients.jedis.ShardedJedisPool"  scope="singleton">  
+          <constructor-arg index="0" ref="jedisPoolConfig" />  
+          <constructor-arg index="1">  
+              <list>  
+                  <bean class="redis.clients.jedis.JedisShardInfo">  
+                      <constructor-arg name="host" value="192.168.186.128" />  
+                      <constructor-arg name="port" value="6379" />  
+                     <!--  <constructor-arg name="timeout" value="3000" />   -->
+                      <property name="password" value="123456"/>
+                  </bean>  
+              </list>  
+          </constructor-arg>  
+      </bean>  
+        <!-- end使用redis缓存 -->     
+</beans>
